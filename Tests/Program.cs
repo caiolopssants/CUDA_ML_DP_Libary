@@ -12,9 +12,10 @@ namespace Tests
 {
     class Program
     {
-
+        [STAThread]
         static void Main(/*string[] args*/)
         {
+
             #region Test CUDA_ML_Libary.MachineLearning.MachineLearningTools.GeneralTool  |CreatPolynoumsArray/CUDACreatPolynoumsArray|
             //    double[] array1 = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             //    double[][] array2 = new double[][] { array1, array1, array1, array1, array1, array1, array1, array1,};
@@ -653,14 +654,14 @@ namespace Tests
             //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), output, 60, 20, 20);
             //    //d = DateTime.Now;
 
-            //    MachineLearning.SupervisedLearning.LinearRegression lR = new MachineLearning.SupervisedLearning.LinearRegression(mlDatas, 0.0000000051499, 1000000, true);
+            //    MachineLearning.SupervisedLearning.LinearRegression lR = new MachineLearning.SupervisedLearning.LinearRegression(mlDatas, 0.00000000061499, 5000, true);
 
             //    #region Batch 
             //    Console.WriteLine(WriteArray(lR.Theta));
             //    Console.WriteLine();
 
             //    a = DateTime.Now;
-            //    lR.DoBatchGradientDescent(1000, true, MachineLearning.SupervisedLearning.LinearRegression.Normalization.MaxMin_Normalization, true/*, false, false, false*/);
+            //    lR.DoBatchGradientDescent(10000, true, MachineLearning.SupervisedLearning.LinearRegression.Normalization.MaxMin_Normalization, true/*, false, false, false*/);
             //    b = DateTime.Now;
             //    List<double> percentages = new List<double>();
             //    double max = double.NaN, min = double.NaN;
@@ -679,9 +680,10 @@ namespace Tests
             //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
             //    Console.WriteLine($"Average: {percentages.Average()}%        Standart Deviation: {GetStandartDeviation(percentages)}%");
             //    Console.WriteLine($"Max: {max}%        Min: {min}%");
+            //    Console.WriteLine($"Cost Function: {lR.CostFunction()}");
             //    Console.ReadLine();
             //    c = DateTime.Now;
-            //    lR.CUDADoBatchGradientDescent(1000, true, MachineLearning.SupervisedLearning.LinearRegression.Normalization.MaxMin_Normalization, true/*, false, false, false*/);
+            //    lR.CUDADoBatchGradientDescent(10000, true, MachineLearning.SupervisedLearning.LinearRegression.Normalization.MaxMin_Normalization, true/*, false, false, false*/);
             //    d = DateTime.Now;
 
             //    percentages.Clear();
@@ -702,6 +704,7 @@ namespace Tests
             //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
             //    Console.WriteLine($"Average: {percentages.Average()}%        Standart Deviation: {GetStandartDeviation(percentages)}%");
             //    Console.WriteLine($"Max: {max}%        Min: {min}%");
+            //    Console.WriteLine($"Cost Function: {lR.CostFunction()}");
             //    Console.ReadLine();
             //    #endregion
             //    #region Stochastic
@@ -769,20 +772,20 @@ namespace Tests
 
             //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
             //    a = DateTime.Now;
-            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), output, 60, 20, 20);
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), output, 70, 15, 15);
             //    b = DateTime.Now;
             //    //c = DateTime.Now;
             //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), output, 60, 20, 20);
             //    //d = DateTime.Now;
 
-            //    MachineLearning.SupervisedLearning.LogisticRegression lR = new MachineLearning.SupervisedLearning.LogisticRegression(mlDatas, 0.00005, 20, true);
+            //    MachineLearning.SupervisedLearning.LogisticRegression lR = new MachineLearning.SupervisedLearning.LogisticRegression(mlDatas, 0.00005, 10, true);
 
             //    #region Batch 
             //    Console.WriteLine(WriteArray(lR.Theta));
             //    Console.WriteLine();
 
             //    a = DateTime.Now;
-            //    lR.DoBatchGradientDescent(50, false, false, false);
+            //    lR.DoBatchGradientDescent(1000) ;
             //    b = DateTime.Now;
             //    double
             //        tp,// true positive
@@ -804,7 +807,7 @@ namespace Tests
 
             //        int
             //            pred = ((predict) >= 0.5 ? 1 : 0),
-            //            res = (pred == lR.Datas.TestOutputs[m] ? 100 : 0);
+            //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
             //        if (res == 100)
             //        {
             //            if (pred == 1)
@@ -820,7 +823,176 @@ namespace Tests
             //                fp++;
             //        }
 
-            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m]} = {res}%");
+            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
+            //    }
+
+            //    //EXEMPLO DE UMA CONFIGURAÇÃO DE FORNECE UMA PRECISÃO ALTA
+            //    //Thetas: {-0,000111772911285156;0,00443780580073447;0,00416591991433254}
+            //    //tp: 15    tn: 4    fp: 0    fn: 1
+            //    //acc: 95 % sens: 93,75 % spe: 100 %
+            //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
+            //    Console.WriteLine($"tp: {tp}    tn: {tn}    fp: {fp}    fn: {fn}");
+            //    acc = (tp + tn) / lR.Datas.TestFeatures.Length; //precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
+            //    sens = tp / (tp + fn);//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
+            //    spe = tn / (tn + fp);//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
+            //    Console.WriteLine($"acc: {acc * 100}%    sens: {sens * 100}%    spe: {spe * 100}%");
+            //    Console.WriteLine($"Cost Function: {lR.CostFunction()}");
+            //    Console.WriteLine("\n\n");
+            //    Console.ReadLine();
+            //    c = DateTime.Now;
+            //    lR.CUDADoBatchGradientDescent(1000);
+            //    d = DateTime.Now;
+            //    tp = 0; tn = 0; fp = 0; fn = 0;
+            //    for (int m = 0; m < lR.Datas.TestFeatures.Length; m++)
+            //    {
+            //        double predict = lR.Theta[0];
+            //        for (int n = 0; n < lR.Datas.TestFeatures[m].Length; n++)
+            //            predict += lR.Theta[n + 1] * lR.Datas.TestFeatures[m][n];
+
+            //        int
+            //            pred = ((predict) >= 0.5 ? 1 : 0),
+            //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
+            //        if (res == 100)
+            //        {
+            //            if (pred == 1)
+            //                tp++;
+            //            else
+            //                tn++;
+            //        }
+            //        else
+            //        {
+            //            if (pred == 1)
+            //                fn++;
+            //            else
+            //                fp++;
+            //        }
+            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
+            //    }
+            //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
+            //    Console.WriteLine($"tp: {tp}    tn: {tn}    fp: {fp}    fn: {fn}");
+            //    acc = (tp + tn) / lR.Datas.TestFeatures.Length; //precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
+            //    sens = tp / (tp + fn);//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
+            //    spe = tn / (tn + fp);//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
+            //    Console.WriteLine($"acc: {acc * 100}%    sens: {sens * 100}%    spe: {spe * 100}%");
+            //    Console.WriteLine($"Cost Function: {lR.CostFunction()}");
+            //    Console.WriteLine("\n\n");
+            //    #endregion
+            //    #region Stochastic
+
+            //    #endregion
+            //    #region Mini-Batch
+
+            //    #endregion
+            //    Console.Write
+            //        (
+            //        $"Start: {a}\n" +
+            //        $"End: {b}\n" +
+            //        $"Total: {b.Subtract(a)}\n" +
+            //        $"Start: {c}\n" +
+            //        $"End: {d}\n" +
+            //        $"Total: {d.Subtract(c)}\n"
+            //        );
+            //FINAL:
+            //    Console.WriteLine("Concluido");
+            //    Console.ReadLine();
+            //    return;
+            #endregion
+
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.LogisticRegression  |BatchGradientDescent|    |CUDABatchGradientDescent|
+            //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Logistic Regression\LR_DataSample.txt";
+
+            //    IEnumerable<double>
+            //        f1_x1 = new double[] { },//Quantidade de entradas
+            //        f2_x2 = new double[] { };//Quantidade de saídas                
+            //    IEnumerable<double>
+            //        out_y1 = new double[] { };
+
+            //    List<double[]> features = new List<double[]>();
+
+            //    foreach (string line in File.ReadLines(path))
+            //    {
+            //        string[] data = line.Split(',');
+
+            //        double
+            //        x1 = Convert.ToDouble(data[0].Replace('.', ',')),
+            //        x2 = Convert.ToDouble(data[1].Replace('.', ','));
+            //        double
+            //        y1 = Convert.ToDouble(data[2]);
+
+
+            //        f1_x1 = f1_x1.Append(x1);
+            //        f2_x2 = f2_x2.Append(x2);
+            //        out_y1 = out_y1.Append(y1);
+
+            //        features.Add(new double[] { x1, x2 });
+            //    }
+
+            //    //double[][] features = new double[][]
+            //    //{
+            //    //    in_x1.ToArray(),
+            //    //    out_x2.ToArray(),
+            //    //    highOut_x3.ToArray(),
+            //    //    expQntd_x4.ToArray(),
+            //    //    simpExpQntd_x5.ToArray(),
+            //    //};
+
+            //    double[] output = out_y1.ToArray();
+
+            //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
+            //    a = DateTime.Now;
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), output, 60, 20, 20);
+            //    b = DateTime.Now;
+            //    //c = DateTime.Now;
+            //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), output, 60, 20, 20);
+            //    //d = DateTime.Now;
+
+            //    MachineLearning.SupervisedLearning.LogisticRegression lR = new MachineLearning.SupervisedLearning.LogisticRegression(mlDatas, 0.15, 1, true);
+
+            //    #region Batch 
+            //    Console.WriteLine(WriteArray(lR.Theta));
+            //    Console.WriteLine();
+
+            //    a = DateTime.Now;
+            //    lR.BatchGradientDescent(lR.Datas.TrainFeatures, MachineLearning.MachineLearningTools.GeneralTools.CUDAGetSpecificElements(0, lR.Datas.TrainOutputs), lR.Alpha, lR.Lambda, 200);
+            //    //lR.DoBatchGradientDescent(200);
+            //    b = DateTime.Now;
+            //    double
+            //        tp,// true positive
+            //        tn,// true negative
+            //        fp,// false positive 
+            //        fn;// false negative
+
+            //    double
+            //        acc,//precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
+            //        sens,//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
+            //        spe;//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
+
+            //    tp = 0; tn = 0; fp = 0; fn = 0;
+            //    for (int m = 0; m < lR.Datas.TestFeatures.Length; m++)
+            //    {
+            //        double predict = lR.Theta[0];
+            //        for (int n = 0; n < lR.Datas.TestFeatures[m].Length; n++)
+            //            predict += lR.Theta[n + 1] * lR.Datas.TestFeatures[m][n];
+
+            //        int
+            //            pred = ((predict) >= 0.5 ? 1 : 0),
+            //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
+            //        if (res == 100)
+            //        {
+            //            if (pred == 1)
+            //                tp++;
+            //            else
+            //                tn++;
+            //        }
+            //        else
+            //        {
+            //            if (pred == 1)
+            //                fn++;
+            //            else
+            //                fp++;
+            //        }
+
+            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
             //    }
 
             //    //EXEMPLO DE UMA CONFIGURAÇÃO DE FORNECE UMA PRECISÃO ALTA
@@ -835,11 +1007,10 @@ namespace Tests
             //    Console.WriteLine($"acc: {acc * 100}%    sens: {sens * 100}%    spe: {spe * 100}%");
             //    Console.ReadLine();
             //    c = DateTime.Now;
-            //    lR.CUDADoBatchGradientDescent(50/*, false, false, false*/);
-            //    d = DateTime.Now;
-            //    Console.WriteLine(WriteArray(lR.Theta));
+            //    lR.CUDABatchGradientDescent(lR.Datas.TrainFeatures, MachineLearning.MachineLearningTools.GeneralTools.CUDAGetSpecificElements(0, lR.Datas.TrainOutputs), lR.Alpha, lR.Lambda, 200, true, MachineLearning.SupervisedLearning.LogisticRegression.Normalization.Standardisation);
+            //    //lR.CUDADoBatchGradientDescent(200);
+            //    d = DateTime.Now;            
             //    Console.WriteLine();
-            //    Console.ReadLine();
             //    tp = 0; tn = 0; fp = 0; fn = 0;
             //    for (int m = 0; m < lR.Datas.TestFeatures.Length; m++)
             //    {
@@ -849,7 +1020,7 @@ namespace Tests
 
             //        int
             //            pred = ((predict) >= 0.5 ? 1 : 0),
-            //            res = (pred == lR.Datas.TestOutputs[m] ? 100 : 0);
+            //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
             //        if (res == 100)
             //        {
             //            if (pred == 1)
@@ -864,8 +1035,9 @@ namespace Tests
             //            else
             //                fp++;
             //        }
-            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m]} = {res}%");
+            //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
             //    }
+            //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
             //    Console.WriteLine($"tp: {tp}    tn: {tn}    fp: {fp}    fn: {fn}");
             //    acc = (tp + tn) / lR.Datas.TestFeatures.Length; //precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
             //    sens = tp / (tp + fn);//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
@@ -893,33 +1065,892 @@ namespace Tests
             //    return;
             #endregion
 
-            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.LogisticRegression  |BatchGradientDescent|    |CUDABatchGradientDescent|
-        //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Logistic Regression\LR_DataSample.txt";
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.NeuralNetworks  |Constructor|
+            //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Neural Network\NW_DataSample.txt";
 
-        //    IEnumerable<double>
-        //        f1_x1 = new double[] { },//Quantidade de entradas
-        //        f2_x2 = new double[] { };//Quantidade de saídas                
-        //    IEnumerable<double>
-        //        out_y1 = new double[] { };
+
+
+            //    List<double[]> features = new List<double[]>();
+            //    List<double[]> outputs = new List<double[]>();
+
+            //    foreach (string line in File.ReadLines(path))
+            //    {
+            //        string[] data = line.Split(',');
+
+            //        double[] ftrs = new double[]
+            //        {
+            //                Convert.ToDouble(data[0].Replace('.', ',')),//x1
+            //                Convert.ToDouble(data[1].Replace('.', ',')),//x2
+            //                Convert.ToDouble(data[2].Replace('.', ',')),//x3
+            //                Convert.ToDouble(data[3].Replace('.', ',')),//x4
+            //                Convert.ToDouble(data[4].Replace('.', ',')),//x5
+            //                Convert.ToDouble(data[5].Replace('.', ',')),//x6
+            //                Convert.ToDouble(data[6].Replace('.', ',')),//x7
+            //                                                            //Convert.ToDouble(data[7].Replace('.', ',')),//x8
+            //                                                            //Convert.ToDouble(data[8].Replace('.', ',')),//x9
+            //                                                            //Convert.ToDouble(data[9].Replace('.', ',')),//x10
+            //                                                            //Convert.ToDouble(data[10].Replace('.', ',')),//x11/y1
+            //                                                            //Convert.ToDouble(data[11].Replace('.', ',')),//x12/y2
+            //                                                            //Convert.ToDouble(data[12].Replace('.', ',')),//x13/y3
+            //        };
+            //        double[] otpts = new double[]
+            //        {
+            //                Convert.ToDouble(data[10].Replace('.', ',')),//x11/y1
+            //                Convert.ToDouble(data[11].Replace('.', ',')),//x12/y2
+            //                Convert.ToDouble(data[12].Replace('.', ',')),//x13/y3
+            //        };
+
+            //        features.Add(ftrs);
+            //        outputs.Add(otpts);
+            //    }
+
+            //    //double[][] features = new double[][]
+            //    //{
+            //    //    in_x1.ToArray(),
+            //    //    out_x2.ToArray(),
+            //    //    highOut_x3.ToArray(),
+            //    //    expQntd_x4.ToArray(),
+            //    //    simpExpQntd_x5.ToArray(),
+            //    //};
+
+            //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
+            //    a = DateTime.Now;
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    b = DateTime.Now;
+            //    c = DateTime.Now;
+            //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    d = DateTime.Now;
+
+
+            //    MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, 5, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, 5, true);
+
+            //    int[] hiddenLayers = new int[] { 4, 3, 2, 4, 5 };
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, hiddenLayers, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, hiddenLayers, true);
+            //    Console.WriteLine("\n\nActivation Units");
+            //    Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    Console.WriteLine("\n\nError Margins");
+            //    Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    Console.WriteLine("\n\nUpper Thetas");
+            //    Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    Console.WriteLine("\n\nDerivatives");
+            //    Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    Console.WriteLine("\n\nDeltas");
+            //    Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine(
+            //        $"Upper Thetas Total Lenght: {nW.UpperThetasTotalLenght}\n" +
+            //        $"Derivatives Total Lenght: {nW.DerivativesTotalLenght}\n" +
+            //        $"Deltas Total Lenght: {nW.DeltasTotalLenght}\n" +
+            //        $"Error Margins Total Lenght: {nW.ErrorMarginsTotalLenght}\n" +
+            //        $"Activation Units Total Lenght: {nW.ActivationUnitsTotalLenght}\n" +
+            //        $"Units Count: [{string.Join("  ",nW.LayersUnitsCount)}]");
+            //    Console.WriteLine("\n\n\n");
+            //    Console.Write
+            //        (
+            //        $"Start: {a}\n" +
+            //        $"End: {b}\n" +
+            //        $"Total: {b.Subtract(a)}\n" +
+            //        $"Start: {c}\n" +
+            //        $"End: {d}\n" +
+            //        $"Total: {d.Subtract(c)}\n"
+            //        );
+            //FINAL:
+            //    Console.WriteLine("Concluido");
+            //    Console.ReadLine();
+            //    return;
+            #endregion
+
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.NeuralNetworks  |CostFunction|
+            //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Neural Network\NW_DataSample.txt";
+
+            //    List<double[]> features = new List<double[]>();
+            //    List<double[]> outputs = new List<double[]>();
+
+            //    int limit = 10;
+            //    foreach (string line in File.ReadLines(path))
+            //    {
+            //        if (features.Count == limit)
+            //            break;
+
+            //        string[] data = line.Split(',');
+
+            //        //int n = 400,
+            //        //    k = 4;
+            //        int n = 5,
+            //            k = 4;
+
+
+            //        double[] ftrs = new double[n];
+            //        double[] otpts = new double[k];
+            //        for (int x = 0; x < n; x++)
+            //            ftrs[x] = Convert.ToDouble(data[x].Replace('.', ','));//x
+            //        for (int y = 0, y_ = data.Length - 1; y_ > data.Length - 1 - k; y++, y_--)
+            //            otpts[y] = Convert.ToDouble(data[y_].Replace('.', ','));//y
+
+
+            //        features.Add(ftrs);
+            //        outputs.Add(otpts);                
+            //    }
+
+            //    //double[][] features = new double[][]
+            //    //{
+            //    //    in_x1.ToArray(),
+            //    //    out_x2.ToArray(),
+            //    //    highOut_x3.ToArray(),
+            //    //    expQntd_x4.ToArray(),
+            //    //    simpExpQntd_x5.ToArray(),
+            //    //};
+
+            //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
+            //    a = DateTime.Now;
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    b = DateTime.Now;
+            //    c = DateTime.Now;
+            //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    d = DateTime.Now;
+
+
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, 5, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, 5, true);
+
+            //    int[] hiddenLayers = new int[] { 25 };
+            //    MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, hiddenLayers, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, 0, 0, hiddenLayers, true);
+
+
+            //    Console.WriteLine("\n\nActivation Units");
+            //    Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));
+            //    //Console.WriteLine("\n\nError Margins");
+            //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    Console.WriteLine("\n\nUpper Thetas");
+            //    Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDerivatives");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDeltas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine(
+            //        $"Upper Thetas Total Lenght: {nW.UpperThetasTotalLenght}\n" +
+            //        $"Derivatives Total Lenght: {nW.DerivativesTotalLenght}\n" +
+            //        $"Deltas Total Lenght: {nW.DeltasTotalLenght}\n" +
+            //        $"Error Margins Total Lenght: {nW.ErrorMarginsTotalLenght}\n" +
+            //        $"Activation Units Total Lenght: {nW.ActivationUnitsTotalLenght}\n" +
+            //        $"Units Count: [{string.Join("  ", nW.LayersUnitsCount)}]\n" +
+            //        $"Elements Count: {nW.Datas.ElementsCount}" +
+            //        $"\n\n"
+
+            //        + $"Upper Theta Units Counts: {nW.UpperThetas.Length}\n"
+            //        + $"Upper Theta Units Counts: [{string.Join("  ", nW.UpperThetas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Upper Theta Units Counts: \n[\n{string.Join("\n", nW.UpperThetas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Derivatives Units Counts: {nW.Derivatives.Length}\n"
+            //        + $"Derivatives Units Counts: [{string.Join("  ", nW.Derivatives.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Derivatives Units Counts: \n[\n{string.Join("\n", nW.Derivatives.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Deltas Units Counts: {nW.Deltas.Length}\n"
+            //        + $"Deltas Units Counts: [{string.Join("  ", nW.Deltas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Deltas Units Counts: \n[\n{string.Join("\n", nW.Deltas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Error Margins Units Counts: {nW.ErrorMargins.Length}\n"
+            //        + $"Error Margins Units Counts: [{string.Join("  ", nW.ErrorMargins.ToList().ConvertAll(x => x.Length))}]\n"
+
+            //        + $"Activation Units Counts: {nW.ActivationUnits.Length}\n"
+            //        + $"Activation Units Counts: [{string.Join("  ", nW.ActivationUnits.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Activation Units Counts: \n[\n{string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Cost Function: {nW.CostFunction()}\n"
+            //        );
+
+            //    Console.WriteLine("\n\n\n");
+            //    Console.Write
+            //        (
+            //        $"Start: {a}\n" +
+            //        $"End: {b}\n" +
+            //        $"Total: {b.Subtract(a)}\n" +
+            //        $"Start: {c}\n" +
+            //        $"End: {d}\n" +
+            //        $"Total: {d.Subtract(c)}\n"
+            //        );
+
+
+            //    //preciso testar se a função de custo está batendo o valor de acordo com a mesma função no octave
+            //    //preciso de:
+            //    //Unidades de ativação
+            //    //Upper Thetas
+
+
+            //    #region Criando elementos para testar no Octave
+
+            //    ////string au = "\naU = [[" + string.Join($"]];\naU = [[", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ut = "\nuT = [[" + string.Join($"]];\nuT = [[", nW.UpperThetas.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ot = "\noT = [[" + string.Join($"];[", nW.Datas.TrainOutputs.ToList().ConvertAll(i => string.Join(",", i.ToList().ConvertAll(j => /*Math.Round(j,4)*/j.ToString().Replace(',', '.'))))) + "]]" + ";";
+
+            //    //List<string> aus = new List<string>(),
+            //    //    uts = new List<string>(),
+            //    //    utSum = new List<string>(),
+            //    //    ots = new List<string>();
+
+            //    //for (int i = 0; i < nW.ActivationUnits.Length; i++)
+            //    //{
+            //    //    aus.Add($"aU{i} = [");
+            //    //    for (int j = 0; j < nW.ActivationUnits[i].Length; j++)
+            //    //    {
+            //    //        aus[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.ActivationUnits[i][j].Length; k++)
+            //    //        {
+            //    //            aus[i] += k == 0? $"{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}" : $",{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        aus[i] += "]";
+            //    //    }
+            //    //    aus[i] += "];\n";
+            //    //}
+            //    //for (int i = 0; i < nW.UpperThetas.Length; i++)
+            //    //{
+            //    //    uts.Add($"uT{i} = [");
+            //    //    utSum.Add((i == 0? $"sum(sum(uT{i}(:,2:size(uT{i},2)).^2))": $"+sum(sum(uT{i}(:,2:size(uT{i},2)).^2))"));
+            //    //    for (int j = 0; j < nW.UpperThetas[i].Length; j++)
+            //    //    {
+            //    //        uts[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.UpperThetas[i][j].Length; k++)
+            //    //        {
+            //    //            uts[i] += k == 0 ? $"{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}" : $",{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        uts[i] += "]";
+            //    //    }
+            //    //    uts[i] += "];\n";
+            //    //}
+
+            //    //ots.Add($"oT = [");
+            //    //for (int i = 0; i < nW.Datas.TrainOutputs.Length; i++)
+            //    //{
+            //    //    ots[0] += i==0?"[": ";[";
+            //    //    for (int j = 0; j < nW.Datas.TrainOutputs[i].Length; j++)
+            //    //    {
+            //    //        ots[0] += j == 0 ? $"{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}" : $",{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}";
+            //    //    }
+            //    //    ots[0] += "]";
+            //    //}
+            //    //ots[0] += "];\n";
+
+            //    //string
+            //    //        lambda = $"\nlambda = {nW.Lambda}",
+            //    //        m = "\nm=size(oT,1);",
+            //    //        costFunc = $"\nJ=(1/m)*sum(sum((-oT).*log(aU{aus.Count-1})+(oT-1).*log(1-aU{aus.Count - 1})))+(lambda/(2*m))*({string.Join("", utSum)});";
+
+
+
+
+            //    ////Console.WriteLine(au);           
+            //    ////Console.WriteLine(ut);
+            //    ////Console.WriteLine(ot);
+            //    //Console.WriteLine(string.Join("", aus));
+            //    //Console.WriteLine(string.Join("", uts));
+            //    //Console.WriteLine(string.Join("", ots));
+
+            //    //Console.WriteLine(lambda);
+            //    //Console.WriteLine(m);
+            //    //Console.WriteLine(costFunc);
+
+            //    //System.Windows.Forms.Clipboard.SetText(string.Join("", aus) + string.Join("", uts) + string.Join("", ots) + lambda + m + costFunc);
+
+            //    ////System.Windows.Forms.Clipboard.SetText(au + ut + ot + lambda + m + costFunc);
+            //    #endregion
+
+            //    Console.WriteLine();
+            //    Console.WriteLine("Experiment:");
+            //    Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //    Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //    double[] prediction = nW.Predict(nW.Datas.TestFeatures.First());
+            //    Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(prediction))}]");
+            //    Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", prediction)}]");
+
+            //    Console.ReadLine();
+
+            //FINAL:
+            //    Console.WriteLine("Concluido");
+            //    Console.ReadLine();
+            //    return;
+            #endregion
+
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.NeuralNetworks  |Foward Propagation|  |Backward Propagation|  |Gradient Descent|
+            //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Neural Network\NW_DataSample.txt";
+
+            //    List<double[]> features = new List<double[]>();
+            //    List<double[]> outputs = new List<double[]>();
+
+            //    int limit = 5000;
+            //    foreach (string line in File.ReadLines(path))
+            //    {
+            //        if (features.Count == limit)
+            //            break;
+
+            //        string[] data = line.Split(',');
+
+            //        int n = 400,
+            //            k = 4;
+            //        //int n = 5,
+            //        //    k = 4;
+
+
+            //        double[] ftrs = new double[n];
+            //        double[] otpts = new double[k];
+            //        for (int x = 0; x < n; x++)
+            //            ftrs[x] = Convert.ToDouble(data[x].Replace('.', ','));//x
+            //        for (int y = 0, y_ = data.Length - 1; y_ > data.Length - 1 - k; y++, y_--)
+            //            otpts[y] = Convert.ToDouble(data[y_].Replace('.', ','));//y
+
+
+            //        features.Add(ftrs);
+            //        outputs.Add(otpts);
+            //    }
+
+            //    //double[][] features = new double[][]
+            //    //{
+            //    //    in_x1.ToArray(),
+            //    //    out_x2.ToArray(),
+            //    //    highOut_x3.ToArray(),
+            //    //    expQntd_x4.ToArray(),
+            //    //    simpExpQntd_x5.ToArray(),
+            //    //};
+
+            //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
+            //    a = DateTime.Now;
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    b = DateTime.Now;
+            //    c = DateTime.Now;
+            //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    d = DateTime.Now;
+
+            //    double alpha = 0.50;
+            //    double lambda = 3;
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, true);
+
+            //    int[] hiddenLayers = new int[] { 25 };
+            //    MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, true);
+
+
+            //    //Console.WriteLine("\n\nActivation Units");
+            //    //Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));
+            //    //Console.WriteLine("\n\nError Margins");
+            //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    //Console.WriteLine("\n\nUpper Thetas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDeltas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDerivatives");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\n\n");
+            //    Console.WriteLine(
+            //        $"Upper Thetas Total Lenght: {nW.UpperThetasTotalLenght}\n" +
+            //        $"Derivatives Total Lenght: {nW.DerivativesTotalLenght}\n" +
+            //        $"Deltas Total Lenght: {nW.DeltasTotalLenght}\n" +
+            //        $"Error Margins Total Lenght: {nW.ErrorMarginsTotalLenght}\n" +
+            //        $"Activation Units Total Lenght: {nW.ActivationUnitsTotalLenght}\n" +
+            //        $"Units Count: [{string.Join("  ", nW.LayersUnitsCount)}]\n" +
+            //        $"Elements Count (Total): {nW.Datas.ElementsCount}\n" +
+            //        $"Elements Count (Train): {nW.Datas.TrainElementsCount}\n" +
+            //        $"Elements Count (Test): {nW.Datas.TestElementsCount}\n" +
+            //        $"Elements Count (Development): {nW.Datas.DevelopmentElementsCount}\n" +
+            //        $"\n\n"
+
+            //        + $"Upper Theta Units Counts: {nW.UpperThetas.Length}\n"
+            //        + $"Upper Theta Units Counts: [{string.Join("  ", nW.UpperThetas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Upper Theta Units Counts: \n[\n{string.Join("\n", nW.UpperThetas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Derivatives Units Counts: {nW.Derivatives.Length}\n"
+            //        + $"Derivatives Units Counts: [{string.Join("  ", nW.Derivatives.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Derivatives Units Counts: \n[\n{string.Join("\n", nW.Derivatives.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Deltas Units Counts: {nW.Deltas.Length}\n"
+            //        + $"Deltas Units Counts: [{string.Join("  ", nW.Deltas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Deltas Units Counts: \n[\n{string.Join("\n", nW.Deltas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Error Margins Units Counts: {nW.ErrorMargins.Length}\n"
+            //        + $"Error Margins Units Counts: [{string.Join("  ", nW.ErrorMargins.ToList().ConvertAll(x => x.Length))}]\n"
+
+            //        + $"Activation Units Counts: {nW.ActivationUnits.Length}\n"
+            //        + $"Activation Units Counts: [{string.Join("  ", nW.ActivationUnits.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Activation Units Counts: \n[\n{string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Cost Function: {nW.CostFunction()}\n"
+            //        );
+
+            //    Console.WriteLine();
+            //    Console.WriteLine("Experiment:");
+            //    Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //    Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //    double[] pr = nW.Predict(nW.Datas.TestFeatures.First());
+            //    Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(pr))}]");
+            //    Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pr)}]");
+
+            //    Console.WriteLine("Press any key to proceed...");
+
+
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine("Press any key to proceed...");
+            //    Console.ReadKey();
+
+            //    #region Foward|Backward|Gradiend
+            //    //Console.WriteLine("Initializing Foward Propagation...");
+            //    //nW.DoFowardPropagation();           
+
+            //    //Console.WriteLine("\n\nActivation Units");
+            //    //Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));            
+            //    //Console.WriteLine("\n\n\n");
+            //    //Console.WriteLine("Press any key to proceed...");
+            //    //Console.ReadKey();
+
+            //    //Console.WriteLine("Initializing Backward Propagation...");
+            //    //nW.DoBackwardPropagation();
+
+            //    //Console.WriteLine("\n\nError Margins");
+            //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    //Console.WriteLine("\n\nDeltas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDerivatives");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\n\n");
+            //    //Console.WriteLine("Press any key to proceed...");
+            //    //Console.ReadKey();
+
+
+            //    //Console.WriteLine("Initializing Gradient Descent...");
+            //    //nW.DoGradientDescent();
+
+            //    //Console.WriteLine("\n\nUpper Thetas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\n\n");
+            //    //Console.WriteLine("Press any key to proceed...");
+            //    //Console.ReadKey();
+            //    #endregion
+
+
+            //    Console.WriteLine("\n\nUpper Thetas (Initial)");
+            //    Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+
+            //    for (int propagation = 0; propagation < 10; propagation++)
+            //    {
+            //        nW.DoFowardPropagation();
+            //        nW.DoBackwardPropagation();
+            //        nW.DoGradientDescent();
+
+            //        //Console.WriteLine("\n\nUpper Thetas");
+            //        //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //        //Console.WriteLine("\n\n\n");
+            //        //Console.WriteLine("Press any key to proceed...");
+            //        //Console.ReadKey();
+            //        //Console.WriteLine("\n\nError Margins");
+            //        //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //        //Console.WriteLine("\n\n\n");
+            //        //Console.WriteLine("Press any key to proceed...");
+            //        //Console.ReadKey();
+
+
+            //        Console.WriteLine();
+            //        Console.WriteLine("Experiment:");
+            //        Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //        Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //        double[] pred = nW.Predict(nW.Datas.TestFeatures.First());
+            //        Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(pred))}]");
+            //        Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pred)}]");
+
+            //        Console.WriteLine("\n\n\n");
+            //        Console.WriteLine("Press any key to proceed...");
+            //        Console.ReadKey();
+            //    }
+
+
+
+
+
+
+            //    Console.Write
+            //        (
+            //        $"Start: {a}\n" +
+            //        $"End: {b}\n" +
+            //        $"Total: {b.Subtract(a)}\n" +
+            //        $"Start: {c}\n" +
+            //        $"End: {d}\n" +
+            //        $"Total: {d.Subtract(c)}\n"
+            //        );
+
+
+            //    //preciso testar se a função de custo está batendo o valor de acordo com a mesma função no octave
+            //    //preciso de:
+            //    //Unidades de ativação
+            //    //Upper Thetas
+
+
+            //    #region Criando elementos para testar no Octave
+
+            //    ////string au = "\naU = [[" + string.Join($"]];\naU = [[", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ut = "\nuT = [[" + string.Join($"]];\nuT = [[", nW.UpperThetas.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ot = "\noT = [[" + string.Join($"];[", nW.Datas.TrainOutputs.ToList().ConvertAll(i => string.Join(",", i.ToList().ConvertAll(j => /*Math.Round(j,4)*/j.ToString().Replace(',', '.'))))) + "]]" + ";";
+
+            //    //List<string> aus = new List<string>(),
+            //    //    uts = new List<string>(),
+            //    //    utSum = new List<string>(),
+            //    //    ots = new List<string>();
+
+            //    //for (int i = 0; i < nW.ActivationUnits.Length; i++)
+            //    //{
+            //    //    aus.Add($"aU{i} = [");
+            //    //    for (int j = 0; j < nW.ActivationUnits[i].Length; j++)
+            //    //    {
+            //    //        aus[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.ActivationUnits[i][j].Length; k++)
+            //    //        {
+            //    //            aus[i] += k == 0? $"{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}" : $",{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        aus[i] += "]";
+            //    //    }
+            //    //    aus[i] += "];\n";
+            //    //}
+            //    //for (int i = 0; i < nW.UpperThetas.Length; i++)
+            //    //{
+            //    //    uts.Add($"uT{i} = [");
+            //    //    utSum.Add((i == 0? $"sum(sum(uT{i}(:,2:size(uT{i},2)).^2))": $"+sum(sum(uT{i}(:,2:size(uT{i},2)).^2))"));
+            //    //    for (int j = 0; j < nW.UpperThetas[i].Length; j++)
+            //    //    {
+            //    //        uts[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.UpperThetas[i][j].Length; k++)
+            //    //        {
+            //    //            uts[i] += k == 0 ? $"{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}" : $",{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        uts[i] += "]";
+            //    //    }
+            //    //    uts[i] += "];\n";
+            //    //}
+
+            //    //ots.Add($"oT = [");
+            //    //for (int i = 0; i < nW.Datas.TrainOutputs.Length; i++)
+            //    //{
+            //    //    ots[0] += i==0?"[": ";[";
+            //    //    for (int j = 0; j < nW.Datas.TrainOutputs[i].Length; j++)
+            //    //    {
+            //    //        ots[0] += j == 0 ? $"{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}" : $",{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}";
+            //    //    }
+            //    //    ots[0] += "]";
+            //    //}
+            //    //ots[0] += "];\n";
+
+            //    //string
+            //    //        lambda = $"\nlambda = {nW.Lambda}",
+            //    //        m = "\nm=size(oT,1);",
+            //    //        costFunc = $"\nJ=(1/m)*sum(sum((-oT).*log(aU{aus.Count-1})+(oT-1).*log(1-aU{aus.Count - 1})))+(lambda/(2*m))*({string.Join("", utSum)});";
+
+
+
+
+            //    ////Console.WriteLine(au);           
+            //    ////Console.WriteLine(ut);
+            //    ////Console.WriteLine(ot);
+            //    //Console.WriteLine(string.Join("", aus));
+            //    //Console.WriteLine(string.Join("", uts));
+            //    //Console.WriteLine(string.Join("", ots));
+
+            //    //Console.WriteLine(lambda);
+            //    //Console.WriteLine(m);
+            //    //Console.WriteLine(costFunc);
+
+            //    //System.Windows.Forms.Clipboard.SetText(string.Join("", aus) + string.Join("", uts) + string.Join("", ots) + lambda + m + costFunc);
+
+            //    ////System.Windows.Forms.Clipboard.SetText(au + ut + ot + lambda + m + costFunc);
+            //    #endregion
+
+            //    Console.WriteLine();
+            //    Console.WriteLine("Experiment:");
+            //    Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //    Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //    double[] prediction = nW.Predict(nW.Datas.TestFeatures.First());
+            //    Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(prediction))}]");
+            //    Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", prediction)}]");
+
+            //    Console.ReadLine();
+
+            //FINAL:
+            //    Console.WriteLine("Concluido");
+            //    Console.ReadLine();
+            //    return;
+            #endregion
+
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.NeuralNetworks  |Propagation|
+            //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Neural Network\NW_DataSample.txt";
+
+            //    List<double[]> features = new List<double[]>();
+            //    List<double[]> outputs = new List<double[]>();
+
+            //    int limit = 5000;
+            //    foreach (string line in File.ReadLines(path))
+            //    {
+            //        if (features.Count == limit)
+            //            break;
+
+            //        string[] data = line.Split(',');
+
+            //        //int n = 400,
+            //        //    k = 4;
+            //        int n = 5,
+            //            k = 4;
+
+
+            //        double[] ftrs = new double[n];
+            //        double[] otpts = new double[k];
+            //        for (int x = 0; x < n; x++)
+            //            ftrs[x] = Convert.ToDouble(data[x].Replace('.', ','));//x
+            //        for (int y = 0, y_ = data.Length - 1; y_ > data.Length - 1 - k; y++, y_--)
+            //            otpts[y] = Convert.ToDouble(data[y_].Replace('.', ','));//y
+
+
+            //        features.Add(ftrs);
+            //        outputs.Add(otpts);
+            //    }
+
+            //    //double[][] features = new double[][]
+            //    //{
+            //    //    in_x1.ToArray(),
+            //    //    out_x2.ToArray(),
+            //    //    highOut_x3.ToArray(),
+            //    //    expQntd_x4.ToArray(),
+            //    //    simpExpQntd_x5.ToArray(),
+            //    //};
+
+            //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
+            //    a = DateTime.Now;
+            //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    b = DateTime.Now;
+            //    c = DateTime.Now;
+            //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+            //    d = DateTime.Now;
+
+            //    double alpha = 0.50;
+            //    double lambda = 3;
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, true);
+
+            //    int[] hiddenLayers = new int[] { 25 };
+            //    MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, false);
+            //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, true);
+
+
+            //    //Console.WriteLine("\n\nActivation Units");
+            //    //Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));
+            //    //Console.WriteLine("\n\nError Margins");
+            //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+            //    //Console.WriteLine("\n\nUpper Thetas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDeltas");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\nDerivatives");
+            //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+            //    //Console.WriteLine("\n\n\n");
+            //    Console.WriteLine(
+            //        $"Upper Thetas Total Lenght: {nW.UpperThetasTotalLenght}\n" +
+            //        $"Derivatives Total Lenght: {nW.DerivativesTotalLenght}\n" +
+            //        $"Deltas Total Lenght: {nW.DeltasTotalLenght}\n" +
+            //        $"Error Margins Total Lenght: {nW.ErrorMarginsTotalLenght}\n" +
+            //        $"Activation Units Total Lenght: {nW.ActivationUnitsTotalLenght}\n" +
+            //        $"Units Count: [{string.Join("  ", nW.LayersUnitsCount)}]\n" +
+            //        $"Elements Count (Total): {nW.Datas.ElementsCount}\n" +
+            //        $"Elements Count (Train): {nW.Datas.TrainElementsCount}\n" +
+            //        $"Elements Count (Test): {nW.Datas.TestElementsCount}\n" +
+            //        $"Elements Count (Development): {nW.Datas.DevelopmentElementsCount}\n" +
+            //        $"\n\n"
+
+            //        + $"Upper Theta Units Counts: {nW.UpperThetas.Length}\n"
+            //        + $"Upper Theta Units Counts: [{string.Join("  ", nW.UpperThetas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Upper Theta Units Counts: \n[\n{string.Join("\n", nW.UpperThetas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Derivatives Units Counts: {nW.Derivatives.Length}\n"
+            //        + $"Derivatives Units Counts: [{string.Join("  ", nW.Derivatives.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Derivatives Units Counts: \n[\n{string.Join("\n", nW.Derivatives.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Deltas Units Counts: {nW.Deltas.Length}\n"
+            //        + $"Deltas Units Counts: [{string.Join("  ", nW.Deltas.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Deltas Units Counts: \n[\n{string.Join("\n", nW.Deltas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Error Margins Units Counts: {nW.ErrorMargins.Length}\n"
+            //        + $"Error Margins Units Counts: [{string.Join("  ", nW.ErrorMargins.ToList().ConvertAll(x => x.Length))}]\n"
+
+            //        + $"Activation Units Counts: {nW.ActivationUnits.Length}\n"
+            //        + $"Activation Units Counts: [{string.Join("  ", nW.ActivationUnits.ToList().ConvertAll(x => x.Length))}]\n"
+            //        + $"Activation Units Counts: \n[\n{string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+            //        + $"Cost Function: {nW.CostFunction()}\n"
+            //        );
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine("Press any key to proceed...");
+            //    Console.ReadKey();
+
+            //    Console.WriteLine("\n\nUpper Thetas (Initial)");
+            //    Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+
+            //    Console.WriteLine();
+            //    Console.WriteLine("Experiment:");
+            //    Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //    Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //    double[] pr = nW.Predict(nW.Datas.TestFeatures.First());
+            //    Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(pr))}]");
+            //    Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pr)}]");
+
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine("Press any key to proceed...");
+            //    Console.ReadKey();
+
+            //    nW.DoPropagation(10);
+
+            //    Console.WriteLine("\n\nUpper Thetas (Final)");
+            //    Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+
+            //    Console.WriteLine();
+            //    Console.WriteLine("Experiment:");
+            //    Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+            //    Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+            //    pr = nW.Predict(nW.Datas.TestFeatures.First());
+            //    Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(pr))}]");
+            //    Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pr)}]");
+
+            //    Console.WriteLine("\n\n\n");
+            //    Console.WriteLine("Press any key to proceed...");
+            //    Console.ReadKey();
+
+
+
+
+            //    Console.Write
+            //        (
+            //        $"Start: {a}\n" +
+            //        $"End: {b}\n" +
+            //        $"Total: {b.Subtract(a)}\n" +
+            //        $"Start: {c}\n" +
+            //        $"End: {d}\n" +
+            //        $"Total: {d.Subtract(c)}\n"
+            //        );
+
+
+            //    //preciso testar se a função de custo está batendo o valor de acordo com a mesma função no octave
+            //    //preciso de:
+            //    //Unidades de ativação
+            //    //Upper Thetas
+
+
+            //    #region Criando elementos para testar no Octave
+
+            //    ////string au = "\naU = [[" + string.Join($"]];\naU = [[", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ut = "\nuT = [[" + string.Join($"]];\nuT = [[", nW.UpperThetas.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+            //    ////string ot = "\noT = [[" + string.Join($"];[", nW.Datas.TrainOutputs.ToList().ConvertAll(i => string.Join(",", i.ToList().ConvertAll(j => /*Math.Round(j,4)*/j.ToString().Replace(',', '.'))))) + "]]" + ";";
+
+            //    //List<string> aus = new List<string>(),
+            //    //    uts = new List<string>(),
+            //    //    utSum = new List<string>(),
+            //    //    ots = new List<string>();
+
+            //    //for (int i = 0; i < nW.ActivationUnits.Length; i++)
+            //    //{
+            //    //    aus.Add($"aU{i} = [");
+            //    //    for (int j = 0; j < nW.ActivationUnits[i].Length; j++)
+            //    //    {
+            //    //        aus[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.ActivationUnits[i][j].Length; k++)
+            //    //        {
+            //    //            aus[i] += k == 0? $"{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}" : $",{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        aus[i] += "]";
+            //    //    }
+            //    //    aus[i] += "];\n";
+            //    //}
+            //    //for (int i = 0; i < nW.UpperThetas.Length; i++)
+            //    //{
+            //    //    uts.Add($"uT{i} = [");
+            //    //    utSum.Add((i == 0? $"sum(sum(uT{i}(:,2:size(uT{i},2)).^2))": $"+sum(sum(uT{i}(:,2:size(uT{i},2)).^2))"));
+            //    //    for (int j = 0; j < nW.UpperThetas[i].Length; j++)
+            //    //    {
+            //    //        uts[i] += j == 0 ? "[" : ";[";
+            //    //        for (int k = 0; k < nW.UpperThetas[i][j].Length; k++)
+            //    //        {
+            //    //            uts[i] += k == 0 ? $"{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}" : $",{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}";
+            //    //        }
+            //    //        uts[i] += "]";
+            //    //    }
+            //    //    uts[i] += "];\n";
+            //    //}
+
+            //    //ots.Add($"oT = [");
+            //    //for (int i = 0; i < nW.Datas.TrainOutputs.Length; i++)
+            //    //{
+            //    //    ots[0] += i==0?"[": ";[";
+            //    //    for (int j = 0; j < nW.Datas.TrainOutputs[i].Length; j++)
+            //    //    {
+            //    //        ots[0] += j == 0 ? $"{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}" : $",{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}";
+            //    //    }
+            //    //    ots[0] += "]";
+            //    //}
+            //    //ots[0] += "];\n";
+
+            //    //string
+            //    //        lambda = $"\nlambda = {nW.Lambda}",
+            //    //        m = "\nm=size(oT,1);",
+            //    //        costFunc = $"\nJ=(1/m)*sum(sum((-oT).*log(aU{aus.Count-1})+(oT-1).*log(1-aU{aus.Count - 1})))+(lambda/(2*m))*({string.Join("", utSum)});";
+
+
+
+
+            //    ////Console.WriteLine(au);           
+            //    ////Console.WriteLine(ut);
+            //    ////Console.WriteLine(ot);
+            //    //Console.WriteLine(string.Join("", aus));
+            //    //Console.WriteLine(string.Join("", uts));
+            //    //Console.WriteLine(string.Join("", ots));
+
+            //    //Console.WriteLine(lambda);
+            //    //Console.WriteLine(m);
+            //    //Console.WriteLine(costFunc);
+
+            //    //System.Windows.Forms.Clipboard.SetText(string.Join("", aus) + string.Join("", uts) + string.Join("", ots) + lambda + m + costFunc);
+
+            //    ////System.Windows.Forms.Clipboard.SetText(au + ut + ot + lambda + m + costFunc);
+            //    #endregion            
+
+            //FINAL:
+            //    Console.WriteLine("Concluido");
+            //    Console.ReadLine();
+            //    return;
+            #endregion
+
+            #region Test CUDA_ML_Libary.MachineLearning.SupervisedLearning.NeuralNetworks  |Cat Dog Test|
+        //    string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Neural Network\NW_CatDogDataSample.txt";
 
         //    List<double[]> features = new List<double[]>();
+        //    List<double[]> outputs = new List<double[]>();
 
+        //    int limit = 5000;
         //    foreach (string line in File.ReadLines(path))
         //    {
+        //        if (features.Count == limit)
+        //            break;
+
         //        string[] data = line.Split(',');
 
-        //        double
-        //        x1 = Convert.ToDouble(data[0].Replace('.', ',')),
-        //        x2 = Convert.ToDouble(data[1].Replace('.', ','));
-        //        double
-        //        y1 = Convert.ToDouble(data[2]);
+        //        int n = 22185,
+        //            k = 1;
+        //        //int n = 5,
+        //        //    k = 4;
 
 
-        //        f1_x1 = f1_x1.Append(x1);
-        //        f2_x2 = f2_x2.Append(x2);
-        //        out_y1 = out_y1.Append(y1);
+        //        double[] ftrs = new double[n];
+        //        double[] otpts = new double[k];
+        //        for (int x = 0; x < n; x++)
+        //            ftrs[x] = Convert.ToDouble(data[x].Replace('.', ','));//x
+        //        for (int y = 0, y_ = data.Length - 1; y_ > data.Length - 1 - k; y++, y_--)
+        //            otpts[y] = Convert.ToDouble(data[y_].Replace('.', ','));//y
 
-        //        features.Add(new double[] { x1, x2 });
+
+        //        features.Add(ftrs);
+        //        outputs.Add(otpts);
         //    }
 
         //    //double[][] features = new double[][]
@@ -931,120 +1962,160 @@ namespace Tests
         //    //    simpExpQntd_x5.ToArray(),
         //    //};
 
-        //    double[] output = out_y1.ToArray();
-
         //    DateTime a = DateTime.Now, b = DateTime.Now, c = DateTime.Now, d = DateTime.Now;
         //    a = DateTime.Now;
-        //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), output, 60, 20, 20);
+        //    MachineLearning.MLDatas mlDatas = new MachineLearning.MLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
         //    b = DateTime.Now;
-        //    //c = DateTime.Now;
-        //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), output, 60, 20, 20);
-        //    //d = DateTime.Now;
-
-        //    MachineLearning.SupervisedLearning.LogisticRegression lR = new MachineLearning.SupervisedLearning.LogisticRegression(mlDatas, 0.15, 1, true);
-
-        //    #region Batch 
-        //    Console.WriteLine(WriteArray(lR.Theta));
-        //    Console.WriteLine();
-
-        //    a = DateTime.Now;
-        //    lR.BatchGradientDescent(lR.Datas.TrainFeatures, MachineLearning.MachineLearningTools.GeneralTools.CUDAGetSpecificElements(0, lR.Datas.TrainOutputs), lR.Alpha, lR.Lambda, 200);
-        //    //lR.DoBatchGradientDescent(200);
-        //    b = DateTime.Now;
-        //    double
-        //        tp,// true positive
-        //        tn,// true negative
-        //        fp,// false positive 
-        //        fn;// false negative
-
-        //    double
-        //        acc,//precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
-        //        sens,//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
-        //        spe;//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
-
-        //    tp = 0; tn = 0; fp = 0; fn = 0;
-        //    for (int m = 0; m < lR.Datas.TestFeatures.Length; m++)
-        //    {
-        //        double predict = lR.Theta[0];
-        //        for (int n = 0; n < lR.Datas.TestFeatures[m].Length; n++)
-        //            predict += lR.Theta[n + 1] * lR.Datas.TestFeatures[m][n];
-
-        //        int
-        //            pred = ((predict) >= 0.5 ? 1 : 0),
-        //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
-        //        if (res == 100)
-        //        {
-        //            if (pred == 1)
-        //                tp++;
-        //            else
-        //                tn++;
-        //        }
-        //        else
-        //        {
-        //            if (pred == 1)
-        //                fn++;
-        //            else
-        //                fp++;
-        //        }
-
-        //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
-        //    }
-
-        //    //EXEMPLO DE UMA CONFIGURAÇÃO DE FORNECE UMA PRECISÃO ALTA
-        //    //Thetas: {-0,000111772911285156;0,00443780580073447;0,00416591991433254}
-        //    //tp: 15    tn: 4    fp: 0    fn: 1
-        //    //acc: 95 % sens: 93,75 % spe: 100 %
-        //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
-        //    Console.WriteLine($"tp: {tp}    tn: {tn}    fp: {fp}    fn: {fn}");
-        //    acc = (tp + tn) / lR.Datas.TestFeatures.Length; //precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
-        //    sens = tp / (tp + fn);//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
-        //    spe = tn / (tn + fp);//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
-        //    Console.WriteLine($"acc: {acc * 100}%    sens: {sens * 100}%    spe: {spe * 100}%");
-        //    Console.ReadLine();
         //    c = DateTime.Now;
-        //    lR.CUDABatchGradientDescent(lR.Datas.TrainFeatures, MachineLearning.MachineLearningTools.GeneralTools.CUDAGetSpecificElements(0, lR.Datas.TrainOutputs), lR.Alpha, lR.Lambda, 200, true, MachineLearning.SupervisedLearning.LogisticRegression.Normalization.Standardisation);
-        //    //lR.CUDADoBatchGradientDescent(200);
-        //    d = DateTime.Now;            
-        //    Console.WriteLine();
-        //    tp = 0; tn = 0; fp = 0; fn = 0;
-        //    for (int m = 0; m < lR.Datas.TestFeatures.Length; m++)
+        //    //MachineLearning.MLDatas cudamlDatas = new MachineLearning.CUDAMLDatas(features.ToArray(), outputs.ToArray(), 70, 15, 15);
+        //    d = DateTime.Now;
+
+        //    double alpha = 0.50;
+        //    double lambda = 3;
+        //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, false);
+        //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, 5, true);
+
+        //    int[] hiddenLayers = new int[] { 25,30,35,15,25 };
+        //    MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, false);
+        //    //MachineLearning.SupervisedLearning.NeuralNetworks nW = new MachineLearning.SupervisedLearning.NeuralNetworks(mlDatas, alpha, lambda, hiddenLayers, true);
+
+
+        //    //Console.WriteLine("\n\nActivation Units");
+        //    //Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));
+        //    //Console.WriteLine("\n\nError Margins");
+        //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+        //    //Console.WriteLine("\n\nUpper Thetas");
+        //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\nDeltas");
+        //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\nDerivatives");
+        //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\n\n");
+        //    Console.WriteLine(
+        //        $"Upper Thetas Total Lenght: {nW.UpperThetasTotalLenght}\n" +
+        //        $"Derivatives Total Lenght: {nW.DerivativesTotalLenght}\n" +
+        //        $"Deltas Total Lenght: {nW.DeltasTotalLenght}\n" +
+        //        $"Error Margins Total Lenght: {nW.ErrorMarginsTotalLenght}\n" +
+        //        $"Activation Units Total Lenght: {nW.ActivationUnitsTotalLenght}\n" +
+        //        $"Units Count: [{string.Join("  ", nW.LayersUnitsCount)}]\n" +
+        //        $"Elements Count (Total): {nW.Datas.ElementsCount}\n" +
+        //        $"Elements Count (Train): {nW.Datas.TrainElementsCount}\n" +
+        //        $"Elements Count (Test): {nW.Datas.TestElementsCount}\n" +
+        //        $"Elements Count (Development): {nW.Datas.DevelopmentElementsCount}\n" +
+        //        $"\n\n"
+
+        //        + $"Upper Theta Units Counts: {nW.UpperThetas.Length}\n"
+        //        + $"Upper Theta Units Counts: [{string.Join("  ", nW.UpperThetas.ToList().ConvertAll(x => x.Length))}]\n"
+        //        + $"Upper Theta Units Counts: \n[\n{string.Join("\n", nW.UpperThetas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+        //        + $"Derivatives Units Counts: {nW.Derivatives.Length}\n"
+        //        + $"Derivatives Units Counts: [{string.Join("  ", nW.Derivatives.ToList().ConvertAll(x => x.Length))}]\n"
+        //        + $"Derivatives Units Counts: \n[\n{string.Join("\n", nW.Derivatives.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+        //        + $"Deltas Units Counts: {nW.Deltas.Length}\n"
+        //        + $"Deltas Units Counts: [{string.Join("  ", nW.Deltas.ToList().ConvertAll(x => x.Length))}]\n"
+        //        + $"Deltas Units Counts: \n[\n{string.Join("\n", nW.Deltas.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+        //        + $"Error Margins Units Counts: {nW.ErrorMargins.Length}\n"
+        //        + $"Error Margins Units Counts: [{string.Join("  ", nW.ErrorMargins.ToList().ConvertAll(x => x.Length))}]\n"
+
+        //        + $"Activation Units Counts: {nW.ActivationUnits.Length}\n"
+        //        + $"Activation Units Counts: [{string.Join("  ", nW.ActivationUnits.ToList().ConvertAll(x => x.Length))}]\n"
+        //        + $"Activation Units Counts: \n[\n{string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(x => $"{x.Length} x {x[0].Length}"))}\n]\n"
+
+        //        + $"Cost Function: {nW.CostFunction()}\n"
+        //        );
+
+        //    //Console.WriteLine();
+        //    //Console.WriteLine("Experiment:");
+        //    //Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+        //    //Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+        //    //double[] pr = nW.Predict(nW.Datas.TestFeatures.First());
+        //    //Console.WriteLine($"Predictions (values): [{string.Join(",", nW.InvertSigmoid(pr))}]");
+        //    //Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pr)}]");
+
+        //    //Console.WriteLine("Press any key to proceed...");
+
+
+        //    Console.WriteLine("\n\n\n");
+        //    Console.WriteLine("Press any key to proceed...");
+        //    Console.ReadKey();
+
+        //    #region Foward|Backward|Gradiend
+        //    //Console.WriteLine("Initializing Foward Propagation...");
+        //    //nW.DoFowardPropagation();           
+
+        //    //Console.WriteLine("\n\nActivation Units");
+        //    //Console.WriteLine(string.Join("\n", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j))))));            
+        //    //Console.WriteLine("\n\n\n");
+        //    //Console.WriteLine("Press any key to proceed...");
+        //    //Console.ReadKey();
+
+        //    //Console.WriteLine("Initializing Backward Propagation...");
+        //    //nW.DoBackwardPropagation();
+
+        //    //Console.WriteLine("\n\nError Margins");
+        //    //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+        //    //Console.WriteLine("\n\nDeltas");
+        //    //Console.WriteLine(string.Join("\n\n", nW.Deltas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\nDerivatives");
+        //    //Console.WriteLine(string.Join("\n\n", nW.Derivatives.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\n\n");
+        //    //Console.WriteLine("Press any key to proceed...");
+        //    //Console.ReadKey();
+
+
+        //    //Console.WriteLine("Initializing Gradient Descent...");
+        //    //nW.DoGradientDescent();
+
+        //    //Console.WriteLine("\n\nUpper Thetas");
+        //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //    //Console.WriteLine("\n\n\n");
+        //    //Console.WriteLine("Press any key to proceed...");
+        //    //Console.ReadKey();
+        //    #endregion
+
+
+        //    //Console.WriteLine("\n\nUpper Thetas (Initial)");
+        //    //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+
+        //    for (int propagation = 0; propagation < 5000; propagation++)
         //    {
-        //        double predict = lR.Theta[0];
-        //        for (int n = 0; n < lR.Datas.TestFeatures[m].Length; n++)
-        //            predict += lR.Theta[n + 1] * lR.Datas.TestFeatures[m][n];
+        //        nW.DoFowardPropagation();
+        //        nW.DoBackwardPropagation();
+        //        nW.DoGradientDescent();
 
-        //        int
-        //            pred = ((predict) >= 0.5 ? 1 : 0),
-        //            res = (pred == lR.Datas.TestOutputs[m][0] ? 100 : 0);
-        //        if (res == 100)
-        //        {
-        //            if (pred == 1)
-        //                tp++;
-        //            else
-        //                tn++;
-        //        }
-        //        else
-        //        {
-        //            if (pred == 1)
-        //                fn++;
-        //            else
-        //                fp++;
-        //        }
-        //        Console.WriteLine($"{{{predict}}} -> {((predict) >= 0.5 ? 1 : 0)} / {lR.Datas.TestOutputs[m][0]} = {res}%");
+        //        //Console.WriteLine("\n\nUpper Thetas");
+        //        //Console.WriteLine(string.Join("\n\n", nW.UpperThetas.ToList().ConvertAll(i => string.Join("\n", i.ToList().ConvertAll(j => string.Join(";", j.ToList().ConvertAll(k => Math.Round(k, 2))))))));
+        //        //Console.WriteLine("\n\n\n");
+        //        //Console.WriteLine("Press any key to proceed...");
+        //        //Console.ReadKey();
+        //        //Console.WriteLine("\n\nError Margins");
+        //        //Console.WriteLine(string.Join("\n", nW.ErrorMargins.ToList().ConvertAll(i => string.Join("    ", i))));
+        //        //Console.WriteLine("\n\n\n");
+        //        //Console.WriteLine("Press any key to proceed...");
+        //        //Console.ReadKey();
+
+
+        //        Console.WriteLine();
+        //        Console.WriteLine("Experiment:");
+        //        //Console.WriteLine($"Element: [{string.Join(",", nW.Datas.TestFeatures.First())}]");
+        //        Console.WriteLine($"Output: [{string.Join(",", nW.Datas.TestOutputs.First())}]");
+        //        double[] pred = nW.Predict(nW.Datas.TestFeatures.First());
+        //        Func<double[], double[]> iAAF = MachineLearning.SupervisedLearning.NeuralNetworks.ActivationFunctions.GetInvertArrayFunction(nW.ActiovationFunction);
+        //        Console.WriteLine($"Predictions (values): [{string.Join(",", iAAF(pred))}]");
+        //        Console.WriteLine($"Predictions (sigmoid values): [{string.Join(",", pred)}]");
+
+        //        Console.WriteLine("\n\n\n");
+        //        //Console.WriteLine("Press any key to proceed...");
+        //        //Console.ReadKey();
         //    }
-        //    Console.WriteLine($"Thetas: {{{string.Join(";", lR.Theta)}}}");
-        //    Console.WriteLine($"tp: {tp}    tn: {tn}    fp: {fp}    fn: {fn}");
-        //    acc = (tp + tn) / lR.Datas.TestFeatures.Length; //precisão (accuracy) mede a proporção de predições corretas, independemente de serem verdadeiros positivos ou negativos.
-        //    sens = tp / (tp + fn);//sensibilidade (sensitivity) mede a proporção de verdadeiros positivos, ou seja, a capacidade do modelo classificar como positivo dado que ele é de fato positivo.
-        //    spe = tn / (tn + fp);//especificidade (pecificity) mede a proporção de verdadeiros negativos, ou seja, a capacidade do modelo classificar como negativo dado que ele é de fato negativo.
-        //    Console.WriteLine($"acc: {acc * 100}%    sens: {sens * 100}%    spe: {spe * 100}%");
-        //    #endregion
-        //    #region Stochastic
 
-        //    #endregion
-        //    #region Mini-Batch
 
-        //    #endregion
+
+
+
+
         //    Console.Write
         //        (
         //        $"Start: {a}\n" +
@@ -1054,13 +2125,96 @@ namespace Tests
         //        $"End: {d}\n" +
         //        $"Total: {d.Subtract(c)}\n"
         //        );
-        //FINAL:
+
+
+        //    //preciso testar se a função de custo está batendo o valor de acordo com a mesma função no octave
+        //    //preciso de:
+        //    //Unidades de ativação
+        //    //Upper Thetas
+
+
+        //    #region Criando elementos para testar no Octave
+
+        //    ////string au = "\naU = [[" + string.Join($"]];\naU = [[", nW.ActivationUnits.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+        //    ////string ut = "\nuT = [[" + string.Join($"]];\nuT = [[", nW.UpperThetas.ToList().ConvertAll(i => string.Join("];[", i.ToList().ConvertAll(j => string.Join(",", j.ToList().ConvertAll(k => /*Math.Round(k,4)*/k.ToString().Replace(',', '.'))))))) + "]]" + ";";
+        //    ////string ot = "\noT = [[" + string.Join($"];[", nW.Datas.TrainOutputs.ToList().ConvertAll(i => string.Join(",", i.ToList().ConvertAll(j => /*Math.Round(j,4)*/j.ToString().Replace(',', '.'))))) + "]]" + ";";
+
+        //    //List<string> aus = new List<string>(),
+        //    //    uts = new List<string>(),
+        //    //    utSum = new List<string>(),
+        //    //    ots = new List<string>();
+
+        //    //for (int i = 0; i < nW.ActivationUnits.Length; i++)
+        //    //{
+        //    //    aus.Add($"aU{i} = [");
+        //    //    for (int j = 0; j < nW.ActivationUnits[i].Length; j++)
+        //    //    {
+        //    //        aus[i] += j == 0 ? "[" : ";[";
+        //    //        for (int k = 0; k < nW.ActivationUnits[i][j].Length; k++)
+        //    //        {
+        //    //            aus[i] += k == 0? $"{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}" : $",{nW.ActivationUnits[i][j][k].ToString().Replace(',', '.')}";
+        //    //        }
+        //    //        aus[i] += "]";
+        //    //    }
+        //    //    aus[i] += "];\n";
+        //    //}
+        //    //for (int i = 0; i < nW.UpperThetas.Length; i++)
+        //    //{
+        //    //    uts.Add($"uT{i} = [");
+        //    //    utSum.Add((i == 0? $"sum(sum(uT{i}(:,2:size(uT{i},2)).^2))": $"+sum(sum(uT{i}(:,2:size(uT{i},2)).^2))"));
+        //    //    for (int j = 0; j < nW.UpperThetas[i].Length; j++)
+        //    //    {
+        //    //        uts[i] += j == 0 ? "[" : ";[";
+        //    //        for (int k = 0; k < nW.UpperThetas[i][j].Length; k++)
+        //    //        {
+        //    //            uts[i] += k == 0 ? $"{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}" : $",{nW.UpperThetas[i][j][k].ToString().Replace(',', '.')}";
+        //    //        }
+        //    //        uts[i] += "]";
+        //    //    }
+        //    //    uts[i] += "];\n";
+        //    //}
+
+        //    //ots.Add($"oT = [");
+        //    //for (int i = 0; i < nW.Datas.TrainOutputs.Length; i++)
+        //    //{
+        //    //    ots[0] += i==0?"[": ";[";
+        //    //    for (int j = 0; j < nW.Datas.TrainOutputs[i].Length; j++)
+        //    //    {
+        //    //        ots[0] += j == 0 ? $"{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}" : $",{nW.Datas.TrainOutputs[i][j].ToString().Replace(',', '.')}";
+        //    //    }
+        //    //    ots[0] += "]";
+        //    //}
+        //    //ots[0] += "];\n";
+
+        //    //string
+        //    //        lambda = $"\nlambda = {nW.Lambda}",
+        //    //        m = "\nm=size(oT,1);",
+        //    //        costFunc = $"\nJ=(1/m)*sum(sum((-oT).*log(aU{aus.Count-1})+(oT-1).*log(1-aU{aus.Count - 1})))+(lambda/(2*m))*({string.Join("", utSum)});";
+
+
+
+
+        //    ////Console.WriteLine(au);           
+        //    ////Console.WriteLine(ut);
+        //    ////Console.WriteLine(ot);
+        //    //Console.WriteLine(string.Join("", aus));
+        //    //Console.WriteLine(string.Join("", uts));
+        //    //Console.WriteLine(string.Join("", ots));
+
+        //    //Console.WriteLine(lambda);
+        //    //Console.WriteLine(m);
+        //    //Console.WriteLine(costFunc);
+
+        //    //System.Windows.Forms.Clipboard.SetText(string.Join("", aus) + string.Join("", uts) + string.Join("", ots) + lambda + m + costFunc);
+
+        //    ////System.Windows.Forms.Clipboard.SetText(au + ut + ot + lambda + m + costFunc);
+        //    #endregion          
+
+        ////FINAL:
         //    Console.WriteLine("Concluido");
         //    Console.ReadLine();
         //    return;
             #endregion
-
-            
 
             #region Simplifer Expressions Data
             //string path = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Relatório.txt";
@@ -1443,6 +2597,7 @@ namespace Tests
         }
     }
 }
+
 
 
 

@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CUDA_ML_DP_Libary\CUDA_ML_Libary.csproj">
+    <ProjectReference Include="..\CUDA_ML_DP_Library\CUDA_ML_Library.csproj">
       <Project>{43a5b66d-68af-41cb-9cde-f8eeb00637a9}</Project>
       <Name>CUDA_ML_Libary</Name>
     </ProjectReference>
