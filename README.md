@@ -13,7 +13,7 @@ Pt-BR - Biblioteca desenvolvida em C#, que fornece ferramentas para a criação 
   - ## Logistic Regression
   - ## Neural Networks
 
-  - ## Support Vector Machine
+  - ## Support Vector Machine (**_Under Development/ Em Desenvolvimento_**)
 
 - # Unsupervised Learning (**_Under Development/ Em Desenvolvimento_**)
   - ## K Means
