@@ -2,7 +2,7 @@
 
 En-US - C# library that provides some machine learning tools for projects. Some methods were developed using CUDA Hybridizer library (https://developer.nvidia.com/blog/hybridizer-csharp/), to create parallel processes.
 
-Pt-BR Biblioteca desenvolvida em C#, que fornece ferramentas para a criação de projetos usando aprendizado de máquina. Alguns métodos possuem o auxilio da biblioteca CUDA Hybridizer (https://developer.nvidia.com/blog/hybridizer-csharp/), para a paralelização de processos.
+Pt-BR - Biblioteca desenvolvida em C#, que fornece ferramentas para a criação de projetos usando aprendizado de máquina. Alguns métodos possuem o auxilio da biblioteca CUDA Hybridizer (https://developer.nvidia.com/blog/hybridizer-csharp/), para a paralelização de processos.
 
 # Library Content/ Conteúdo da Biblioteca
 
