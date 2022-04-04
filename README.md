@@ -6,7 +6,10 @@ Pt-BR - Biblioteca desenvolvida em C#, que fornece ferramentas para a criação 
 
 # Library Content/ Conteúdo da Biblioteca
 
-- # Machine Learning Datas (MLDatas/ CUDAMLDatas)
+- # Machine Learning Datas (MLDatas)
+  - https://github.com/caiolopssants/CUDA_ML_Libary/blob/47d982bffd0a812003e6d2a31b8dbdba802f1d94/CUDA_ML_DP_Library/MachineLearning.cs#L21 
+
+- # Machine Learning Datas (CUDAMLDatas)
 
 - # Supervisioned Learning
   - ## Linear Regression
